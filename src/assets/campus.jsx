@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, TrendingUp, DollarSign, Bell, Home, User, BarChart3, Settings, Plus, CheckCircle, Clock, AlertCircle, Download, Share2, Phone, ChevronRight, Star, Zap, Award, ArrowLeft, Copy, LogOut, Menu, X, Edit2, CreditCard } from 'lucide-react';
+import { Users, TrendingUp, DollarSign, Bell, Home, User, BarChart3, Settings, Plus, CheckCircle, Clock, AlertCircle, Download, Share2, Phone, ChevronRight, Star, Zap, Award, ArrowLeft, Copy, LogOut, Menu, X, Edit2, CreditCard, Eye, Filter, Calendar, Mail, MapPin, Banknote, Shield, UserCheck, UserX, Activity, PieChart, TrendingDown, Globe, Building } from 'lucide-react';
 
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
@@ -19,6 +19,7 @@ const STYLES = `
   --white: #ffffff;
   --green: #1a7a42;
   --warning: #b87118;
+  --danger: #b91c1c;
   --sidebar-w: 260px;
 }
 
@@ -124,6 +125,14 @@ body { font-family: 'DM Sans', sans-serif; }
 }
 .btn-outline:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+.btn-danger {
+  padding: 0.85rem 1.5rem; background: var(--danger); color: var(--white); border: none;
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.15s, transform 0.1s; display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.btn-danger:hover { background: #a01818; transform: translateY(-1px); }
+
 .demo-box { margin-top: 2rem; padding: 1rem 1.1rem; background: var(--ink); }
 .demo-box .demo-title { font-family: 'Syne', sans-serif; font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
 .demo-box p { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
@@ -182,6 +191,10 @@ body { font-family: 'DM Sans', sans-serif; }
   font-size: 0.85rem; color: var(--paper);
 }
 .sidebar-role { font-size: 0.72rem; color: rgba(255,255,255,0.38); font-weight: 300; }
+.sidebar-campus { 
+  font-size: 0.65rem; color: rgba(255,255,255,0.3); 
+  margin-top: 0.1rem; display: flex; align-items: center; gap: 0.2rem;
+}
 
 .ref-pill {
   display: inline-flex; align-items: center;
@@ -246,7 +259,7 @@ body { font-family: 'DM Sans', sans-serif; }
 }
 .topbar-actions { display: flex; align-items: center; gap: 0.75rem; }
 
-.page-content { padding: 2rem; flex: 1; max-width: 1200px; width: 100%; }
+.page-content { padding: 2rem; flex: 1; max-width: 1400px; width: 100%; }
 
 /* MOBILE HEADER (hidden on desktop) */
 .mobile-header {
@@ -319,6 +332,8 @@ body { font-family: 'DM Sans', sans-serif; }
 .stat-card-blue { background: var(--blue); color: var(--white); }
 .stat-card-cream { background: var(--cream); border: 1.5px solid var(--border); color: var(--ink); }
 .stat-card-white { background: var(--white); border: 1.5px solid var(--border); color: var(--ink); }
+.stat-card-green { background: var(--green); color: var(--white); }
+.stat-card-danger { background: var(--danger); color: var(--white); }
 
 .stat-label {
   font-family: 'Syne', sans-serif; font-size: 0.65rem;
@@ -374,8 +389,11 @@ body { font-family: 'DM Sans', sans-serif; }
 .badge-green { background: #dcfce7; color: var(--green); }
 .badge-yellow { background: #fef3c7; color: var(--warning); }
 .badge-blue { background: #dbeafe; color: var(--blue); }
+.badge-red { background: #fee2e2; color: var(--danger); }
 .badge-pending { background: #fef3c7; color: var(--warning); }
 .badge-active { background: #dcfce7; color: var(--green); }
+.badge-inactive { background: #e5e5e5; color: var(--muted); }
+.badge-super-admin { background: var(--ink); color: var(--gold); border: 1px solid var(--gold); }
 
 /* ANNOUNCEMENTS */
 .ann-item {
@@ -493,6 +511,14 @@ body { font-family: 'DM Sans', sans-serif; }
 }
 .approve-btn:hover { opacity: 0.85; }
 
+.reject-btn {
+  background: var(--danger); color: var(--white); border: none;
+  padding: 0.5rem 1.1rem; font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.12s; white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 0.3rem;
+}
+.reject-btn:hover { opacity: 0.85; }
+
 .performer-row { padding: 0.875rem 1.5rem; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; gap: 1rem; }
 .performer-row:last-child { border-bottom: none; }
 .rank-badge { width: 1.75rem; height: 1.75rem; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.72rem; flex-shrink: 0; }
@@ -523,7 +549,215 @@ body { font-family: 'DM Sans', sans-serif; }
 .pf-green { background: var(--green); }
 .pf-yellow { background: var(--gold); }
 .pf-blue { background: var(--blue); }
+.pf-red { background: var(--danger); }
 .prog-count { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; color: var(--muted); min-width: 60px; text-align: right; }
+
+/* AMBASSADOR CARDS */
+.ambassador-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.ambassador-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.ambassador-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.ambassador-header {
+  padding: 1.25rem 1.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.ambassador-avatar {
+  width: 3rem;
+  height: 3rem;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ambassador-info {
+  flex: 1;
+}
+
+.ambassador-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.ambassador-body {
+  padding: 1rem 1.25rem;
+}
+
+.ambassador-stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.ambassador-stat-label {
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.ambassador-stat-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+.ambassador-footer {
+  padding: 0.75rem 1.25rem 1.25rem;
+  border-top: 1.5px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ambassador-action-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: none;
+  border: 1.5px solid var(--border);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.12s;
+}
+.ambassador-action-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.ambassador-action-btn.accent {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+.ambassador-action-btn.accent:hover {
+  background: var(--accent-hover);
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink);
+  outline: none;
+}
+
+.filter-search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem 0.75rem;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink);
+  outline: none;
+}
+
+.filter-search:focus {
+  border-color: var(--accent);
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 1.5rem;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.12s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ADMIN MANAGEMENT */
+.admin-creation {
+  background: var(--ink);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--paper);
+}
+
+.admin-campus-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.campus-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+}
+
+.campus-checkbox input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+}
 
 /* EMPTY STATE */
 .empty { text-align: center; padding: 3rem 1.5rem; }
@@ -558,6 +792,7 @@ body { font-family: 'DM Sans', sans-serif; }
   display: flex;
   gap: 0.5rem;
   margin-top: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .lead-action-btn {
@@ -624,8 +859,10 @@ body { font-family: 'DM Sans', sans-serif; }
 
 .modal-content {
   background: var(--paper);
-  max-width: 450px;
+  max-width: 500px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   padding: 2rem;
   border: 2px solid var(--border);
   position: relative;
@@ -668,34 +905,251 @@ const CAP = () => {
   const [leads, setLeads] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
+  const [selectedAmbassador, setSelectedAmbassador] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showAmbassadorModal, setShowAmbassadorModal] = useState(false);
+  const [showAdminCreationModal, setShowAdminCreationModal] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState('');
-  const [announcements] = useState([
-    { id: 1, title: "Welcome to Campus Ambassador Program", content: "Complete your profile to start earning commissions!", date: "2024-08-25" },
-    { id: 2, title: "Monthly Training Session", content: "Join us this Friday for sales training at 3 PM", date: "2024-08-24" }
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('overview');
+  const [newAdminData, setNewAdminData] = useState({
+    name: '',
+    email: '',
+    password: 'admin123',
+    campus: [],
+    role: 'Management'
+  });
+  const [announcements, setAnnouncements] = useState([
+    { id: 1, title: "Welcome to Campus Ambassador Program", content: "Complete your profile to start earning commissions!", date: "2024-08-25", postedBy: "Super Admin", campus: "All" },
+    { id: 2, title: "Monthly Training Session", content: "Join us this Friday for sales training at 3 PM", date: "2024-08-24", postedBy: "Super Admin", campus: "All" }
   ]);
 
+  // Available campuses
+  const campuses = [
+    "University of Lagos",
+    "University of Ibadan",
+    "University of Nigeria",
+    "University of Benin",
+    "Obafemi Awolowo University",
+    "Ahmadu Bello University",
+    "Lagos State University",
+    "Covenant University",
+    "Federal University of Technology, Akure",
+    "University of Port Harcourt"
+  ];
+
   useEffect(() => {
+    // Initialize with demo data - Super Admin and pending ambassadors
     setUsers([
-      { id: 1, email: 'admin@company.com', password: 'admin123', role: 'Management', name: 'Admin User', campus: 'HQ', phone: '+234-800-000-0000', department: 'Management', status: 'active', earnings: 0, referralCode: 'ADM001' },
-      { id: 2, email: 'ambassador@uni.edu', password: 'amb123', role: 'Ambassador', name: 'John Doe', campus: 'University of Lagos', phone: '+234-801-234-5678', department: 'Computer Science', status: 'active', earnings: 25000, referralCode: 'AMB001' }
+      { 
+        id: 1, 
+        email: 'super@company.com', 
+        password: 'super123', 
+        role: 'Super Admin', 
+        name: 'Super Admin', 
+        campus: 'All Campuses', 
+        phone: '+234-800-000-0000', 
+        department: 'Management', 
+        status: 'active', 
+        earnings: 0, 
+        referralCode: 'SUPER001', 
+        managedCampuses: ['All Campuses'],
+        isSuperAdmin: true,
+        dateJoined: '2024-01-01' 
+      },
+      { 
+        id: 2, 
+        email: 'admin@unilag.edu', 
+        password: 'admin123', 
+        role: 'Management', 
+        name: 'Lagos Admin', 
+        campus: 'University of Lagos', 
+        phone: '+234-801-111-1111', 
+        department: 'Management', 
+        status: 'active', 
+        earnings: 0, 
+        referralCode: 'LAGADMIN', 
+        managedCampuses: ['University of Lagos'],
+        isSuperAdmin: false,
+        dateJoined: '2024-01-15' 
+      },
+      { 
+        id: 3, 
+        email: 'john@uni.edu', 
+        password: 'amb123', 
+        role: 'Ambassador', 
+        name: 'John Doe', 
+        campus: 'University of Lagos', 
+        phone: '+234-801-234-5678', 
+        department: 'Computer Science', 
+        status: 'active', 
+        earnings: 35000, 
+        referralCode: 'JOHN001',
+        bankName: 'Access Bank',
+        accountNumber: '1234567890',
+        accountName: 'John Doe',
+        homeAddress: 'Lagos Mainland',
+        schoolAddress: 'Unilag',
+        dateJoined: '2024-02-10' 
+      },
+      { 
+        id: 4, 
+        email: 'jane@uni.edu', 
+        password: 'amb123', 
+        role: 'Ambassador', 
+        name: 'Jane Smith', 
+        campus: 'University of Ibadan', 
+        phone: '+234-802-345-6789', 
+        department: 'Business Admin', 
+        status: 'active', 
+        earnings: 52000, 
+        referralCode: 'JANE001',
+        bankName: 'First Bank',
+        accountNumber: '2345678901',
+        accountName: 'Jane Smith',
+        homeAddress: 'Ibadan',
+        schoolAddress: 'UI',
+        dateJoined: '2024-02-15' 
+      },
+      { 
+        id: 5, 
+        email: 'chioma@uni.edu', 
+        password: 'amb123', 
+        role: 'Ambassador', 
+        name: 'Chioma Okonkwo', 
+        campus: 'University of Benin', 
+        phone: '+234-803-456-7890', 
+        department: 'Mass Comm', 
+        status: 'pending', 
+        earnings: 0, 
+        referralCode: 'CHIOMA001',
+        bankName: 'Zenith Bank',
+        accountNumber: '3456789012',
+        accountName: 'Chioma Okonkwo',
+        homeAddress: 'Benin City',
+        schoolAddress: 'Uniben',
+        dateJoined: '2024-08-20' 
+      },
+      { 
+        id: 6, 
+        email: 'peter@uni.edu', 
+        password: 'amb123', 
+        role: 'Ambassador', 
+        name: 'Peter Obi', 
+        campus: 'University of Nigeria', 
+        phone: '+234-804-567-8901', 
+        department: 'Marketing', 
+        status: 'pending', 
+        earnings: 0, 
+        referralCode: 'PETER001',
+        bankName: 'UBA',
+        accountNumber: '4567890123',
+        accountName: 'Peter Obi',
+        homeAddress: 'Nsukka',
+        schoolAddress: 'UNN',
+        dateJoined: '2024-08-21' 
+      }
     ]);
+    
     setLeads([
-      { id: 1, ambassadorId: 2, ambassadorName: 'John Doe', customerName: 'Jane Smith', contact: '+234-802-345-6789', service: 'Web Development Course', value: 50000, amountPaid: 30000, balance: 20000, status: 'Consultation', commission: 1500, dateAdded: '2024-08-20', paymentHistory: [{ amount: 30000, date: '2024-08-20', commission: 1500 }] }
+      { id: 1, ambassadorId: 3, ambassadorName: 'John Doe', customerName: 'Sarah Johnson', contact: '+234-802-345-6789', service: 'Web Development Course', value: 50000, amountPaid: 30000, balance: 20000, status: 'Consultation', commission: 1500, dateAdded: '2024-08-20', paymentHistory: [{ amount: 30000, date: '2024-08-20', commission: 1500 }] },
+      { id: 2, ambassadorId: 4, ambassadorName: 'Jane Smith', customerName: 'Michael Brown', contact: '+234-803-456-7890', service: 'Data Science Course', value: 75000, amountPaid: 75000, balance: 0, status: 'Converted', commission: 3750, dateAdded: '2024-08-15', paymentHistory: [{ amount: 75000, date: '2024-08-15', commission: 3750 }] },
+      { id: 3, ambassadorId: 3, ambassadorName: 'John Doe', customerName: 'Amara Nnamdi', contact: '+234-805-678-9012', service: 'Mobile App Course', value: 60000, amountPaid: 20000, balance: 40000, status: 'New Lead', commission: 1000, dateAdded: '2024-08-22', paymentHistory: [{ amount: 20000, date: '2024-08-22', commission: 1000 }] }
     ]);
   }, []);
 
   const handleLogin = (email, password) => {
     const user = users.find(u => u.email === email && u.password === password);
-    if (user) { setCurrentUser(user); setCurrentView('dashboard'); }
-    else alert('Invalid credentials');
+    if (user) {
+      // Check if user is approved (active status)
+      if (user.status === 'pending') {
+        alert('Your account is pending approval. Please wait for admin verification.');
+        return;
+      }
+      if (user.status === 'rejected') {
+        alert('Your account has been rejected. Please contact support.');
+        return;
+      }
+      if (user.status === 'suspended') {
+        alert('Your account has been suspended. Please contact support.');
+        return;
+      }
+      setCurrentUser(user); 
+      setCurrentView('dashboard');
+    } else {
+      alert('Invalid credentials');
+    }
   };
 
   const handleRegister = (data) => {
-    const newUser = { ...data, id: users.length + 1, status: 'pending', earnings: 0, referralCode: `AMB${String(users.length + 1).padStart(3, '0')}` };
-    setUsers(p => [...p, newUser]);
-    alert('Registration submitted! Awaiting approval.');
+    // Check if email already exists
+    if (users.some(u => u.email === data.email)) {
+      alert('Email already registered. Please use a different email.');
+      return;
+    }
+
+    const newUser = { 
+      ...data, 
+      id: users.length + 1, 
+      status: 'pending', 
+      earnings: 0, 
+      referralCode: `AMB${String(users.length + 1).padStart(3, '0')}`,
+      dateJoined: new Date().toISOString().split('T')[0]
+    };
+    
+    // Update users state with the new user
+    setUsers(prevUsers => {
+      const updatedUsers = [...prevUsers, newUser];
+      console.log('New user registered:', newUser);
+      console.log('Updated users list:', updatedUsers);
+      return updatedUsers;
+    });
+    
+    alert('Registration submitted! Your account is pending approval. You will be able to log in once approved.');
     setCurrentView('login');
+  };
+
+  const createAdmin = () => {
+    // Only Super Admin can create other admins
+    if (!currentUser || currentUser.role !== 'Super Admin') {
+      alert('Only Super Admin can create new admins');
+      return;
+    }
+
+    if (!newAdminData.name || !newAdminData.email || newAdminData.campus.length === 0) {
+      alert('Please fill all required fields and select at least one campus');
+      return;
+    }
+
+    // Check if email already exists
+    if (users.some(u => u.email === newAdminData.email)) {
+      alert('Email already exists');
+      return;
+    }
+
+    const newAdmin = {
+      id: users.length + 1,
+      ...newAdminData,
+      role: 'Management',
+      status: 'active',
+      earnings: 0,
+      referralCode: `ADMIN${String(users.length + 1).padStart(3, '0')}`,
+      isSuperAdmin: false,
+      managedCampuses: newAdminData.campus,
+      dateJoined: new Date().toISOString().split('T')[0]
+    };
+
+    setUsers(prev => [...prev, newAdmin]);
+    setShowAdminCreationModal(false);
+    setNewAdminData({
+      name: '',
+      email: '',
+      password: 'admin123',
+      campus: [],
+      role: 'Management'
+    });
+    alert('Admin created successfully!');
   };
 
   const addLead = (data) => {
@@ -772,11 +1226,86 @@ const CAP = () => {
     );
   };
 
+  const approveAmbassador = (userId) => {
+    setUsers(p => p.map(u => u.id === userId ? { ...u, status: 'active' } : u));
+    alert('Ambassador approved! They can now log in.');
+  };
+
+  const rejectAmbassador = (userId) => {
+    setUsers(p => p.map(u => u.id === userId ? { ...u, status: 'rejected' } : u));
+    alert('Ambassador rejected.');
+  };
+
+  const suspendAmbassador = (userId) => {
+    setUsers(p => p.map(u => u.id === userId ? { ...u, status: 'suspended' } : u));
+    alert('Ambassador suspended.');
+  };
+
+  const activateAmbassador = (userId) => {
+    setUsers(p => p.map(u => u.id === userId ? { ...u, status: 'active' } : u));
+    alert('Ambassador activated.');
+  };
+
+  const addAnnouncement = (title, content) => {
+    const newAnn = {
+      id: announcements.length + 1,
+      title,
+      content,
+      date: new Date().toISOString().split('T')[0],
+      postedBy: currentUser.name,
+      campus: currentUser.role === 'Super Admin' ? 'All' : currentUser.campus
+    };
+    setAnnouncements(prev => [newAnn, ...prev]);
+  };
+
+  const exportData = (type) => {
+    let data;
+    if (type === 'leads') {
+      data = leads;
+    } else if (type === 'ambassadors') {
+      data = users.filter(u => u.role === 'Ambassador');
+    } else {
+      data = { leads, ambassadors: users.filter(u => u.role === 'Ambassador') };
+    }
+    
+    const jsonData = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${type}_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Check if current user can view this lead (based on campus)
+  const canViewLead = (lead) => {
+    if (!currentUser) return false;
+    if (currentUser.role === 'Super Admin') return true;
+    if (currentUser.role === 'Management') {
+      const ambassador = users.find(u => u.id === lead.ambassadorId);
+      return currentUser.managedCampuses?.includes(ambassador?.campus);
+    }
+    return lead.ambassadorId === currentUser.id;
+  };
+
+  // Check if current user can view this ambassador
+  const canViewAmbassador = (ambassador) => {
+    if (!currentUser) return false;
+    if (currentUser.role === 'Super Admin') return true;
+    if (currentUser.role === 'Management') {
+      return currentUser.managedCampuses?.includes(ambassador.campus);
+    }
+    return false;
+  };
+
   const Badge = ({ status }) => {
-    const cls = status === 'Converted' ? 'badge-green' : 
+    const cls = status === 'Converted' || status === 'active' ? 'badge-green' : 
                 status === 'Consultation' ? 'badge-yellow' : 
-                status === 'active' ? 'badge-active' : 
                 status === 'pending' ? 'badge-pending' : 
+                status === 'suspended' ? 'badge-red' :
+                status === 'rejected' ? 'badge-red' :
+                status === 'Super Admin' ? 'badge-super-admin' :
                 'badge-blue';
     return <span className={`badge ${cls}`}>{status}</span>;
   };
@@ -793,8 +1322,9 @@ const CAP = () => {
           </button>
           <div className="modal-header">Add Payment</div>
           <div className="modal-sub">
-            Customer: {selectedLead.customerName}<br />
-            Balance: ₦{selectedLead.balance.toLocaleString()}
+            <strong>Customer:</strong> {selectedLead.customerName}<br />
+            <strong>Ambassador:</strong> {selectedLead.ambassadorName}<br />
+            <strong>Balance:</strong> ₦{selectedLead.balance?.toLocaleString()}
           </div>
           
           <label className="f-label">Payment Amount (₦)</label>
@@ -836,6 +1366,215 @@ const CAP = () => {
     );
   };
 
+  // Admin Creation Modal
+  const AdminCreationModal = () => {
+    if (!showAdminCreationModal) return null;
+    
+    const toggleCampus = (campus) => {
+      setNewAdminData(prev => {
+        const campuses = [...prev.campus];
+        if (campuses.includes(campus)) {
+          return { ...prev, campus: campuses.filter(c => c !== campus) };
+        } else {
+          return { ...prev, campus: [...campuses, campus] };
+        }
+      });
+    };
+    
+    return (
+      <div className="modal-overlay" onClick={() => setShowAdminCreationModal(false)}>
+        <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+          <button className="modal-close" onClick={() => setShowAdminCreationModal(false)}>
+            <X size={18} />
+          </button>
+          
+          <div className="modal-header">Create New Admin</div>
+          <div className="modal-sub">Assign campus administrators</div>
+          
+          <label className="f-label">Admin Name</label>
+          <input 
+            className="f-input" 
+            placeholder="Full name" 
+            value={newAdminData.name}
+            onChange={e => setNewAdminData(prev => ({ ...prev, name: e.target.value }))}
+          />
+          
+          <label className="f-label">Email Address</label>
+          <input 
+            className="f-input" 
+            type="email" 
+            placeholder="admin@campus.edu" 
+            value={newAdminData.email}
+            onChange={e => setNewAdminData(prev => ({ ...prev, email: e.target.value }))}
+          />
+          
+          <label className="f-label">Default Password</label>
+          <input 
+            className="f-input" 
+            value="admin123" 
+            readOnly 
+            style={{ background: 'var(--cream)' }}
+          />
+          
+          <label className="f-label">Select Campuses to Manage</label>
+          <div className="admin-campus-selector">
+            {campuses.map(campus => (
+              <label key={campus} className="campus-checkbox">
+                <input 
+                  type="checkbox" 
+                  checked={newAdminData.campus.includes(campus)}
+                  onChange={() => toggleCampus(campus)}
+                />
+                <span style={{ fontSize: '0.8rem' }}>{campus}</span>
+              </label>
+            ))}
+          </div>
+          
+          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem' }}>
+            <button className="btn-outline" style={{ flex: 1 }} onClick={() => setShowAdminCreationModal(false)}>
+              Cancel
+            </button>
+            <button className="btn-accent" style={{ flex: 1 }} onClick={createAdmin}>
+              <Shield size={14} /> Create Admin
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Ambassador Detail Modal
+  const AmbassadorModal = () => {
+    if (!showAmbassadorModal || !selectedAmbassador) return null;
+    
+    const ambassadorLeads = leads.filter(l => l.ambassadorId === selectedAmbassador.id);
+    const totalRevenue = ambassadorLeads.reduce((sum, l) => sum + (l.amountPaid || 0), 0);
+    const totalCommission = ambassadorLeads.reduce((sum, l) => sum + (l.commission || 0), 0);
+    const convertedLeads = ambassadorLeads.filter(l => l.status === 'Converted').length;
+    
+    return (
+      <div className="modal-overlay" onClick={() => setShowAmbassadorModal(false)}>
+        <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+          <button className="modal-close" onClick={() => setShowAmbassadorModal(false)}>
+            <X size={18} />
+          </button>
+          
+          <div className="modal-header">Ambassador Profile</div>
+          <div className="modal-sub">Detailed information and performance</div>
+          
+          <div className="profile-hero" style={{ padding: '1.5rem', marginBottom: '1.25rem' }}>
+            <div className="profile-avatar" style={{ width: '3.5rem', height: '3.5rem' }}>
+              <User size={24} color="white" />
+            </div>
+            <div>
+              <div className="profile-name" style={{ fontSize: '1.1rem' }}>{selectedAmbassador.name}</div>
+              <div className="profile-role">{selectedAmbassador.campus} · {selectedAmbassador.department}</div>
+              <div style={{ marginTop: '0.25rem' }}>
+                <Badge status={selectedAmbassador.status} />
+              </div>
+            </div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className="stat-card stat-card-dark" style={{ padding: '1rem' }}>
+              <div className="stat-label">Total Leads</div>
+              <div className="stat-value" style={{ fontSize: '1.2rem' }}>{ambassadorLeads.length}</div>
+            </div>
+            <div className="stat-card stat-card-blue" style={{ padding: '1rem' }}>
+              <div className="stat-label">Converted</div>
+              <div className="stat-value" style={{ fontSize: '1.2rem' }}>{convertedLeads}</div>
+            </div>
+            <div className="stat-card stat-card-accent" style={{ padding: '1rem' }}>
+              <div className="stat-label">Commission</div>
+              <div className="stat-value" style={{ fontSize: '1.2rem' }}>₦{totalCommission.toLocaleString()}</div>
+            </div>
+            <div className="stat-card stat-card-green" style={{ padding: '1rem' }}>
+              <div className="stat-label">Revenue</div>
+              <div className="stat-value" style={{ fontSize: '1.2rem' }}>₦{totalRevenue.toLocaleString()}</div>
+            </div>
+          </div>
+          
+          <div className="card" style={{ marginBottom: '1.25rem' }}>
+            <div className="card-header">
+              <span className="card-title">Personal Information</span>
+            </div>
+            <div className="profile-fields">
+              <div className="pf-row"><span className="pf-key">Email</span><span className="pf-val">{selectedAmbassador.email}</span></div>
+              <div className="pf-row"><span className="pf-key">Phone</span><span className="pf-val">{selectedAmbassador.phone}</span></div>
+              <div className="pf-row"><span className="pf-key">Referral Code</span><span className="pf-val" style={{ fontFamily: 'Syne', fontWeight: 800, color: 'var(--accent)' }}>{selectedAmbassador.referralCode}</span></div>
+              <div className="pf-row"><span className="pf-key">Date Joined</span><span className="pf-val">{selectedAmbassador.dateJoined}</span></div>
+            </div>
+          </div>
+          
+          <div className="card" style={{ marginBottom: '1.25rem' }}>
+            <div className="card-header">
+              <span className="card-title">Bank Details</span>
+            </div>
+            <div className="profile-fields">
+              <div className="pf-row"><span className="pf-key">Bank Name</span><span className="pf-val">{selectedAmbassador.bankName || '—'}</span></div>
+              <div className="pf-row"><span className="pf-key">Account Number</span><span className="pf-val">{selectedAmbassador.accountNumber || '—'}</span></div>
+              <div className="pf-row"><span className="pf-key">Account Name</span><span className="pf-val">{selectedAmbassador.accountName || '—'}</span></div>
+            </div>
+          </div>
+          
+          <div className="card">
+            <div className="card-header">
+              <span className="card-title">Recent Leads</span>
+            </div>
+            {ambassadorLeads.slice(-3).reverse().map(l => (
+              <div className="lead-row" key={l.id}>
+                <div>
+                  <div className="lead-name">{l.customerName}</div>
+                  <div className="lead-service">{l.service}</div>
+                  <div className="lead-date">{l.dateAdded}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div className="lead-commission">₦{l.commission?.toLocaleString()}</div>
+                  <Badge status={l.status} />
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
+            {selectedAmbassador.status === 'active' && (
+              <button className="btn-danger" style={{ flex: 1 }} onClick={() => {
+                suspendAmbassador(selectedAmbassador.id);
+                setShowAmbassadorModal(false);
+              }}>
+                <UserX size={14} /> Suspend
+              </button>
+            )}
+            {selectedAmbassador.status === 'suspended' && (
+              <button className="btn-accent" style={{ flex: 1 }} onClick={() => {
+                activateAmbassador(selectedAmbassador.id);
+                setShowAmbassadorModal(false);
+              }}>
+                <UserCheck size={14} /> Activate
+              </button>
+            )}
+            {selectedAmbassador.status === 'pending' && (
+              <>
+                <button className="approve-btn" style={{ flex: 1 }} onClick={() => {
+                  approveAmbassador(selectedAmbassador.id);
+                  setShowAmbassadorModal(false);
+                }}>
+                  <CheckCircle size={14} /> Approve
+                </button>
+                <button className="reject-btn" style={{ flex: 1 }} onClick={() => {
+                  rejectAmbassador(selectedAmbassador.id);
+                  setShowAmbassadorModal(false);
+                }}>
+                  <X size={14} /> Reject
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // ---- AUTH SCREENS ----
   const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -854,8 +1593,11 @@ const CAP = () => {
           <button className="link-btn" onClick={() => setCurrentView('register')}>New here? Register as Ambassador</button>
           <div className="demo-box">
             <p className="demo-title">Demo Accounts</p>
-            <p>Admin: admin@company.com / admin123</p>
-            <p>Ambassador: ambassador@uni.edu / amb123</p>
+            <p>Super Admin: super@company.com / super123</p>
+            <p>Campus Admin: admin@unilag.edu / admin123</p>
+            <p>Active Ambassador: john@uni.edu / amb123</p>
+            <p>Pending Ambassador: chioma@uni.edu / amb123</p>
+            <p style={{ marginTop: '0.5rem', color: 'var(--gold)' }}>New registrations require approval</p>
           </div>
         </div>
       </div>
@@ -863,8 +1605,23 @@ const CAP = () => {
   };
 
   const RegisterScreen = () => {
-    const [d, setD] = useState({ name: '', email: '', password: '', campus: '', phone: '', department: '', homeAddress: '', schoolAddress: '', bankName: '', accountNumber: '', accountName: '', role: 'Ambassador' });
+    const [d, setD] = useState({ 
+      name: '', 
+      email: '', 
+      password: '', 
+      campus: '', 
+      phone: '', 
+      department: '', 
+      homeAddress: '', 
+      schoolAddress: '', 
+      bankName: '', 
+      accountNumber: '', 
+      accountName: '', 
+      role: 'Ambassador' 
+    });
+    
     const s = (k, v) => setD(p => ({ ...p, [k]: v }));
+    
     return (
       <div className="auth-wrap" style={{ alignItems: 'flex-start', padding: '2rem 1.5rem' }}>
         <div className="auth-card fade-up reg-scroll" style={{ maxWidth: 520, margin: '0 auto' }}>
@@ -875,28 +1632,37 @@ const CAP = () => {
 
           <div className="reg-section-label">Personal Info</div>
           <div className="form-grid-2">
-            <div><label className="f-label">Full Name</label><input className="f-input" placeholder="Your full name" value={d.name} onChange={e => s('name', e.target.value)} /></div>
-            <div><label className="f-label">Email</label><input className="f-input" type="email" placeholder="you@university.edu" value={d.email} onChange={e => s('email', e.target.value)} /></div>
-            <div><label className="f-label">Password</label><input className="f-input" type="password" placeholder="Strong password" value={d.password} onChange={e => s('password', e.target.value)} /></div>
-            <div><label className="f-label">Phone</label><input className="f-input" type="tel" placeholder="+234-..." value={d.phone} onChange={e => s('phone', e.target.value)} /></div>
+            <div><label className="f-label">Full Name *</label><input className="f-input" placeholder="Your full name" value={d.name} onChange={e => s('name', e.target.value)} /></div>
+            <div><label className="f-label">Email *</label><input className="f-input" type="email" placeholder="you@university.edu" value={d.email} onChange={e => s('email', e.target.value)} /></div>
+            <div><label className="f-label">Password *</label><input className="f-input" type="password" placeholder="Strong password" value={d.password} onChange={e => s('password', e.target.value)} /></div>
+            <div><label className="f-label">Phone *</label><input className="f-input" type="tel" placeholder="+234-..." value={d.phone} onChange={e => s('phone', e.target.value)} /></div>
           </div>
 
           <div className="reg-section-label">Academic Info</div>
           <div className="form-grid-2">
-            <div><label className="f-label">University / Campus</label><input className="f-input" placeholder="University of Lagos" value={d.campus} onChange={e => s('campus', e.target.value)} /></div>
-            <div><label className="f-label">Department / Faculty</label><input className="f-input" placeholder="Computer Science" value={d.department} onChange={e => s('department', e.target.value)} /></div>
+            <div><label className="f-label">University / Campus *</label>
+              <select className="f-select" value={d.campus} onChange={e => s('campus', e.target.value)}>
+                <option value="">Select your campus</option>
+                {campuses.map(c => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div><label className="f-label">Department / Faculty *</label><input className="f-input" placeholder="Computer Science" value={d.department} onChange={e => s('department', e.target.value)} /></div>
           </div>
           <div><label className="f-label">Home Address</label><textarea className="f-textarea" placeholder="Your home address" value={d.homeAddress} onChange={e => s('homeAddress', e.target.value)} /></div>
           <div><label className="f-label">School Address</label><textarea className="f-textarea" placeholder="Campus address" value={d.schoolAddress} onChange={e => s('schoolAddress', e.target.value)} /></div>
 
           <div className="reg-section-label">Bank Details</div>
           <div className="form-grid-2">
-            <div><label className="f-label">Bank Name</label><input className="f-input" placeholder="GTBank, Access..." value={d.bankName} onChange={e => s('bankName', e.target.value)} /></div>
-            <div><label className="f-label">Account Number</label><input className="f-input" placeholder="10-digit number" value={d.accountNumber} onChange={e => s('accountNumber', e.target.value)} /></div>
+            <div><label className="f-label">Bank Name *</label><input className="f-input" placeholder="GTBank, Access..." value={d.bankName} onChange={e => s('bankName', e.target.value)} /></div>
+            <div><label className="f-label">Account Number *</label><input className="f-input" placeholder="10-digit number" value={d.accountNumber} onChange={e => s('accountNumber', e.target.value)} /></div>
           </div>
-          <div><label className="f-label">Account Name</label><input className="f-input" placeholder="As on account" value={d.accountName} onChange={e => s('accountName', e.target.value)} /></div>
+          <div><label className="f-label">Account Name *</label><input className="f-input" placeholder="As on account" value={d.accountName} onChange={e => s('accountName', e.target.value)} /></div>
 
-          <button className="btn-primary" onClick={() => handleRegister(d)}>Submit Application →</button>
+          <div style={{ marginTop: '1rem', padding: '1rem', background: 'var(--cream)', border: '1px solid var(--border)', fontSize: '0.8rem' }}>
+            <strong>Note:</strong> Your account will require admin approval before you can log in. You'll be notified once approved.
+          </div>
+
+          <button className="btn-primary" style={{ marginTop: '1rem' }} onClick={() => handleRegister(d)}>Submit Application →</button>
         </div>
       </div>
     );
@@ -907,6 +1673,12 @@ const CAP = () => {
     const myLeads = leads.filter(l => l.ambassadorId === currentUser.id);
     const commission = myLeads.reduce((s, l) => s + (l.commission || 0), 0);
     const converted = myLeads.filter(l => l.status === 'Converted').length;
+    
+    // Filter announcements by campus
+    const relevantAnnouncements = announcements.filter(a => 
+      a.campus === 'All' || a.campus === currentUser.campus
+    );
+    
     return (
       <div className="fade-up">
         <div className="stats-grid stats-grid-4">
@@ -936,9 +1708,17 @@ const CAP = () => {
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title"><Bell size={12} style={{ display: 'inline', marginRight: 6 }} />Announcements</span></div>
-            {announcements.map(a => (
-              <div className="ann-item" key={a.id}><div className="ann-title">{a.title}</div><div className="ann-body">{a.content}</div><div className="ann-date">{a.date}</div></div>
-            ))}
+            {relevantAnnouncements.length === 0 ? (
+              <div className="empty"><span className="empty-ico">🔔</span><div className="empty-text">No announcements</div></div>
+            ) : (
+              relevantAnnouncements.map(a => (
+                <div className="ann-item" key={a.id}>
+                  <div className="ann-title">{a.title}</div>
+                  <div className="ann-body">{a.content}</div>
+                  <div className="ann-date">{a.date} · by {a.postedBy}</div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -985,7 +1765,18 @@ const CAP = () => {
   };
 
   const LeadsView = () => {
-    const myLeads = leads.filter(l => currentUser.role === 'Management' || l.ambassadorId === currentUser.id);
+    let filteredLeads = leads;
+    
+    if (currentUser.role === 'Ambassador') {
+      filteredLeads = leads.filter(l => l.ambassadorId === currentUser.id);
+    } else if (currentUser.role === 'Management') {
+      // Campus admin sees leads from their campuses
+      filteredLeads = leads.filter(l => {
+        const ambassador = users.find(u => u.id === l.ambassadorId);
+        return currentUser.managedCampuses?.includes(ambassador?.campus);
+      });
+    }
+    // Super Admin sees all leads
     
     const handleStatusChange = (leadId, newStatus) => {
       updateLeadStatus(leadId, newStatus);
@@ -996,15 +1787,55 @@ const CAP = () => {
         <PaymentModal />
         <div className="flex-between mb-md">
           <div><div className="pg-eyebrow">Pipeline</div><div className="pg-title" style={{ marginBottom: 0 }}>Leads</div></div>
-          <button className="btn-accent" onClick={() => setCurrentView('addLead')}><Plus size={14} /> New Lead</button>
+          {currentUser.role === 'Ambassador' && (
+            <button className="btn-accent" onClick={() => setCurrentView('addLead')}><Plus size={14} /> New Lead</button>
+          )}
         </div>
+        
+        {(currentUser.role === 'Management' || currentUser.role === 'Super Admin') && (
+          <div className="filter-bar">
+            <select className="filter-select" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+              <option value="all">All Status</option>
+              <option value="New Lead">New Lead</option>
+              <option value="Consultation">Consultation</option>
+              <option value="Converted">Converted</option>
+            </select>
+            <input 
+              className="filter-search" 
+              type="text" 
+              placeholder="Search by customer or ambassador..." 
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+            <button className="btn-outline" onClick={() => exportData('leads')}>
+              <Download size={13} /> Export
+            </button>
+          </div>
+        )}
+        
         <div className="card">
-          {myLeads.length === 0 ? <div className="empty"><span className="empty-ico">📊</span><div className="empty-text">No leads yet. Start adding!</div></div>
-            : myLeads.map(l => (
+          {filteredLeads.length === 0 ? <div className="empty"><span className="empty-ico">📊</span><div className="empty-text">No leads yet.</div></div>
+            : filteredLeads
+              .filter(l => {
+                if (filterStatus !== 'all' && l.status !== filterStatus) return false;
+                if (searchTerm) {
+                  const term = searchTerm.toLowerCase();
+                  return l.customerName.toLowerCase().includes(term) || 
+                         l.ambassadorName?.toLowerCase().includes(term) ||
+                         l.contact.includes(term);
+                }
+                return true;
+              })
+              .map(l => (
               <div className="lead-row" key={l.id} style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <div className="lead-name">{l.customerName}</div>
+                    {(currentUser.role === 'Management' || currentUser.role === 'Super Admin') && (
+                      <div className="lead-service" style={{ color: 'var(--accent)' }}>
+                        <User size={10} style={{ display: 'inline', marginRight: 3 }} /> {l.ambassadorName}
+                      </div>
+                    )}
                     <div className="lead-service">{l.service}</div>
                     <div className="lead-metrics">
                       <span className="metric-chip"><Phone size={10} style={{ display: 'inline', marginRight: 3 }} />{l.contact}</span>
@@ -1045,7 +1876,7 @@ const CAP = () => {
                     </button>
                   )}
                   
-                  {currentUser.role === 'Management' && l.status !== 'Converted' && (
+                  {(currentUser.role === 'Management' || currentUser.role === 'Super Admin') && l.status !== 'Converted' && (
                     <>
                       <button 
                         className="lead-action-btn"
@@ -1127,18 +1958,54 @@ const CAP = () => {
       <div className="fade-up">
         <div className="flex-between mb-md">
           <div><div className="pg-eyebrow">Account</div><div className="pg-title" style={{ marginBottom: 0 }}>Profile</div></div>
-          <button className={editing ? 'btn-accent' : 'btn-outline'} onClick={() => editing ? save() : setEditing(true)}>{editing ? 'Save Changes' : 'Edit Profile'}</button>
+          {currentUser.role === 'Ambassador' && (
+            <button className={editing ? 'btn-accent' : 'btn-outline'} onClick={() => editing ? save() : setEditing(true)}>
+              {editing ? 'Save Changes' : 'Edit Profile'}
+            </button>
+          )}
         </div>
         <div className="profile-hero" style={{ marginBottom: '1.25rem' }}>
           <div className="profile-avatar"><User size={28} color="white" /></div>
-          <div><div className="profile-name">{currentUser.name}</div><div className="profile-role">{currentUser.role}</div><div className="profile-campus">{currentUser.campus}</div><Badge status={currentUser.status} /></div>
+          <div>
+            <div className="profile-name">{currentUser.name}</div>
+            <div className="profile-role">
+              {currentUser.role} 
+              {currentUser.role === 'Management' && currentUser.managedCampuses && (
+                <span style={{ marginLeft: '0.5rem', color: 'var(--gold)' }}>
+                  ({currentUser.managedCampuses.join(', ')})
+                </span>
+              )}
+            </div>
+            <div className="profile-campus">{currentUser.campus}</div>
+            <Badge status={currentUser.status} />
+          </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.25rem' }}>
           <div className="card profile-fields">
-            {[['Full Name', 'name'], ['Email Address', 'email'], ['Phone', 'phone'], ['Department', 'department'], ['Campus', 'campus']].map(([label, key]) => (
+            {[
+              ['Full Name', 'name'], 
+              ['Email Address', 'email'], 
+              ['Phone', 'phone'], 
+              ['Department', 'department'], 
+              ['Campus', 'campus'],
+              ...(currentUser.role === 'Ambassador' ? [
+                ['Bank Name', 'bankName'],
+                ['Account Number', 'accountNumber'],
+                ['Account Name', 'accountName'],
+                ['Home Address', 'homeAddress'],
+                ['School Address', 'schoolAddress']
+              ] : [])
+            ].map(([label, key]) => (
               <div className="pf-row" key={key}>
                 <div className="pf-key">{label}</div>
-                <div className="pf-val"><input value={pd[key] || ''} onChange={e => setPd(p => ({ ...p, [key]: e.target.value }))} disabled={!editing} style={!editing ? { pointerEvents: 'none' } : {}} /></div>
+                <div className="pf-val">
+                  <input 
+                    value={pd[key] || ''} 
+                    onChange={e => setPd(p => ({ ...p, [key]: e.target.value }))} 
+                    disabled={!editing || currentUser.role !== 'Ambassador'} 
+                    style={(!editing || currentUser.role !== 'Ambassador') ? { pointerEvents: 'none' } : {}} 
+                  />
+                </div>
               </div>
             ))}
             <div className="pf-row">
@@ -1165,87 +2032,445 @@ const CAP = () => {
   };
 
   const ManagementDashboard = () => {
-    const total = leads.length;
-    const converted = leads.filter(l => l.status === 'Converted').length;
-    const revenue = leads.reduce((s, l) => s + (l.amountPaid || 0), 0);
-    const pending = users.filter(u => u.status === 'pending');
-    const ambassadors = users.filter(u => u.role === 'Ambassador');
-    const approve = (id) => setUsers(p => p.map(u => u.id === id ? { ...u, status: 'active' } : u));
-    const exportR = () => {
-      const d = JSON.stringify({ leads, users: ambassadors }, null, 2);
-      const el = document.createElement('a'); el.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(d); el.download = `report_${new Date().toISOString().split('T')[0]}.json`; el.click();
+    const [newAnnTitle, setNewAnnTitle] = useState('');
+    const [newAnnContent, setNewAnnContent] = useState('');
+    const [showAnnForm, setShowAnnForm] = useState(false);
+    
+    // Filter data based on admin's campus permissions
+    const visibleAmbassadors = users.filter(u => u.role === 'Ambassador' && canViewAmbassador(u));
+    const visibleLeads = leads.filter(canViewLead);
+    
+    const totalLeads = visibleLeads.length;
+    const convertedLeads = visibleLeads.filter(l => l.status === 'Converted').length;
+    const conversionRate = totalLeads > 0 ? ((convertedLeads / totalLeads) * 100).toFixed(1) : 0;
+    const totalRevenue = visibleLeads.reduce((s, l) => s + (l.amountPaid || 0), 0);
+    const totalCommission = visibleLeads.reduce((s, l) => s + (l.commission || 0), 0);
+    
+    const pendingAmbassadors = visibleAmbassadors.filter(u => u.status === 'pending');
+    const activeAmbassadors = visibleAmbassadors.filter(u => u.status === 'active');
+    const suspendedAmbassadors = visibleAmbassadors.filter(u => u.status === 'suspended');
+    
+    const recentLeads = [...visibleLeads].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).slice(0, 5);
+    
+    const topPerformers = visibleAmbassadors
+      .filter(u => u.status === 'active')
+      .sort((a, b) => b.earnings - a.earnings)
+      .slice(0, 5);
+    
+    const handleAddAnnouncement = () => {
+      if (!newAnnTitle || !newAnnContent) {
+        alert('Please fill both fields');
+        return;
+      }
+      addAnnouncement(newAnnTitle, newAnnContent);
+      setNewAnnTitle('');
+      setNewAnnContent('');
+      setShowAnnForm(false);
     };
+    
     return (
       <div className="fade-up">
-        <div className="stats-grid stats-grid-4">
-          <div className="stat-card stat-card-dark"><div className="stat-label">Ambassadors</div><div className="stat-value">{ambassadors.length}</div><Users className="stat-ghost" /></div>
-          <div className="stat-card stat-card-blue"><div className="stat-label">Conv. Rate</div><div className="stat-value">{total > 0 ? (converted / total * 100).toFixed(0) : 0}%</div><TrendingUp className="stat-ghost" /></div>
-          <div className="stat-card stat-card-accent"><div className="stat-label">Total Revenue</div><div className="stat-value" style={{ fontSize: '1.5rem' }}>₦{revenue.toLocaleString()}</div><DollarSign className="stat-ghost" /></div>
-          <div className="stat-card stat-card-cream"><div className="stat-label">Pending</div><div className="stat-value" style={{ color: pending.length > 0 ? 'var(--warning)' : 'var(--ink)' }}>{pending.length}</div><AlertCircle className="stat-ghost" /></div>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        <PaymentModal />
+        <AmbassadorModal />
+        <AdminCreationModal />
+        
+        <div className="flex-between mb-md">
           <div>
-            {pending.length > 0 && (
-              <div className="card" style={{ marginBottom: '1.25rem' }}>
-                <div className="card-header" style={{ borderLeft: '3px solid var(--warning)' }}>
-                  <span className="card-title"><AlertCircle size={12} style={{ display: 'inline', marginRight: 6, color: 'var(--warning)' }} />Pending Approvals ({pending.length})</span>
+            <div className="pg-eyebrow">
+              {currentUser.role === 'Super Admin' ? 'Super Admin' : 'Campus Admin'}
+            </div>
+            <div className="pg-title" style={{ marginBottom: 0 }}>
+              Management Dashboard
+              {currentUser.role === 'Management' && (
+                <span style={{ fontSize: '0.8rem', marginLeft: '1rem', color: 'var(--muted)' }}>
+                  Managing: {currentUser.managedCampuses?.join(', ')}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex-center gap-sm">
+            {currentUser.role === 'Super Admin' && (
+              <button className="btn-accent" onClick={() => setShowAdminCreationModal(true)}>
+                <Shield size={14} /> Create Admin
+              </button>
+            )}
+            <button className="btn-outline" onClick={() => exportData('all')}>
+              <Download size={13} /> Export
+            </button>
+            <button className="btn-accent" onClick={() => setShowAnnForm(!showAnnForm)}>
+              <Bell size={14} /> Post Announcement
+            </button>
+          </div>
+        </div>
+        
+        {showAnnForm && (
+          <div className="card" style={{ marginBottom: '1.5rem', borderColor: 'var(--accent)' }}>
+            <div className="card-header">
+              <span className="card-title">New Announcement</span>
+            </div>
+            <div className="card-body">
+              <label className="f-label">Title</label>
+              <input 
+                className="f-input" 
+                placeholder="e.g., Monthly Training Session" 
+                value={newAnnTitle}
+                onChange={e => setNewAnnTitle(e.target.value)}
+              />
+              <label className="f-label">Content</label>
+              <textarea 
+                className="f-textarea" 
+                placeholder="Write your announcement here..."
+                rows="3"
+                value={newAnnContent}
+                onChange={e => setNewAnnContent(e.target.value)}
+              />
+              {currentUser.role === 'Management' && (
+                <p style={{ fontSize: '0.7rem', color: 'var(--muted)', marginBottom: '1rem' }}>
+                  This announcement will be visible to ambassadors at: {currentUser.managedCampuses?.join(', ')}
+                </p>
+              )}
+              <div className="flex-between" style={{ gap: '1rem' }}>
+                <button className="btn-outline" onClick={() => setShowAnnForm(false)}>Cancel</button>
+                <button className="btn-accent" onClick={handleAddAnnouncement}>Post Announcement</button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Stats Overview */}
+        <div className="stats-grid stats-grid-4">
+          <div className="stat-card stat-card-dark">
+            <div className="stat-label">Total Ambassadors</div>
+            <div className="stat-value">{activeAmbassadors.length}</div>
+            <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', opacity: 0.6 }}>
+              +{pendingAmbassadors.length} pending
+            </div>
+            <Users className="stat-ghost" />
+          </div>
+          <div className="stat-card stat-card-blue">
+            <div className="stat-label">Conversion Rate</div>
+            <div className="stat-value">{conversionRate}%</div>
+            <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', opacity: 0.6 }}>
+              {convertedLeads} of {totalLeads} leads
+            </div>
+            <TrendingUp className="stat-ghost" />
+          </div>
+          <div className="stat-card stat-card-accent">
+            <div className="stat-label">Total Revenue</div>
+            <div className="stat-value" style={{ fontSize: '1.5rem' }}>₦{totalRevenue.toLocaleString()}</div>
+            <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', opacity: 0.6 }}>
+              Comm: ₦{totalCommission.toLocaleString()}
+            </div>
+            <DollarSign className="stat-ghost" />
+          </div>
+          <div className="stat-card stat-card-green">
+            <div className="stat-label">Active Now</div>
+            <div className="stat-value">{activeAmbassadors.length}</div>
+            <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', opacity: 0.6 }}>
+              {suspendedAmbassadors.length} suspended
+            </div>
+            <Activity className="stat-ghost" />
+          </div>
+        </div>
+        
+        {/* Tabs */}
+        <div className="tabs">
+          <button className={`tab ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>Overview</button>
+          <button className={`tab ${activeTab === 'ambassadors' ? 'active' : ''}`} onClick={() => setActiveTab('ambassadors')}>Ambassadors</button>
+          {pendingAmbassadors.length > 0 && (
+            <button className={`tab ${activeTab === 'pending' ? 'active' : ''}`} onClick={() => setActiveTab('pending')}>
+              Pending Approvals ({pendingAmbassadors.length})
+            </button>
+          )}
+          <button className={`tab ${activeTab === 'leads' ? 'active' : ''}`} onClick={() => setActiveTab('leads')}>All Leads</button>
+        </div>
+        
+        {/* Tab Content */}
+        {activeTab === 'overview' && (
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.25rem' }}>
+            <div>
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title">Recent Leads</span>
+                  <button className="btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.68rem' }} onClick={() => setActiveTab('leads')}>
+                    View All
+                  </button>
                 </div>
-                {pending.map(u => (
-                  <div className="approval-row" key={u.id}>
-                    <div><div className="approval-name">{u.name}</div><div className="approval-meta">{u.campus} · {u.department}</div><div className="approval-meta">{u.email}</div></div>
-                    <button className="approve-btn" onClick={() => approve(u.id)}><CheckCircle size={12} /> Approve</button>
+                {recentLeads.map(l => (
+                  <div className="lead-row" key={l.id}>
+                    <div>
+                      <div className="lead-name">{l.customerName}</div>
+                      <div className="lead-service">
+                        <User size={10} style={{ display: 'inline', marginRight: 3 }} /> {l.ambassadorName} · {l.service}
+                      </div>
+                      <div className="lead-date">{l.dateAdded}</div>
+                    </div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div className="lead-commission">₦{l.amountPaid?.toLocaleString()}</div>
+                      <Badge status={l.status} />
+                    </div>
                   </div>
                 ))}
               </div>
-            )}
-            <div className="card">
-              <div className="card-header"><span className="card-title">Recent Leads</span><button className="btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.68rem' }} onClick={exportR}><Download size={11} /> Export</button></div>
-              {leads.slice(-5).reverse().map(l => (
-                <div className="lead-row" key={l.id}>
-                  <div><div className="lead-name">{l.customerName}</div><div className="lead-service">{l.ambassadorName} · {l.service}</div><div className="lead-date">{l.dateAdded}</div></div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}><div className="lead-commission">₦{l.amountPaid?.toLocaleString()}</div><Badge status={l.status} /></div>
+            </div>
+            
+            <div>
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><Award size={12} style={{ display: 'inline', marginRight: 6 }} />Top Performers</span>
                 </div>
-              ))}
+                {topPerformers.map((u, i) => {
+                  const rc = i === 0 ? 'rank-gold' : i === 1 ? 'rank-silver' : i === 2 ? 'rank-bronze' : 'rank-default';
+                  const userLeads = visibleLeads.filter(l => l.ambassadorId === u.id).length;
+                  return (
+                    <div className="performer-row" key={u.id}>
+                      <div className={`rank-badge ${rc}`}>{i === 0 ? '★' : `#${i + 1}`}</div>
+                      <div>
+                        <div className="performer-name">{u.name}</div>
+                        <div className="performer-meta">{u.campus} · {userLeads} leads</div>
+                      </div>
+                      <div className="performer-earn">₦{u.earnings.toLocaleString()}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><Bell size={12} style={{ display: 'inline', marginRight: 6 }} />Recent Announcements</span>
+                </div>
+                {announcements.slice(0, 3).map(a => (
+                  <div className="ann-item" key={a.id}>
+                    <div className="ann-title">{a.title}</div>
+                    <div className="ann-body">{a.content}</div>
+                    <div className="ann-date">{a.date} · by {a.postedBy}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-header"><span className="card-title"><Award size={12} style={{ display: 'inline', marginRight: 6 }} />Top Performers</span></div>
-            {ambassadors.filter(u => u.earnings > 0).sort((a, b) => b.earnings - a.earnings).slice(0, 6).map((u, i) => {
-              const rc = i === 0 ? 'rank-gold' : i === 1 ? 'rank-silver' : i === 2 ? 'rank-bronze' : 'rank-default';
-              return (
-                <div className="performer-row" key={u.id}>
-                  <div className={`rank-badge ${rc}`}>{i === 0 ? '★' : `#${i + 1}`}</div>
-                  <div><div className="performer-name">{u.name}</div><div className="performer-meta">{u.campus} · {leads.filter(l => l.ambassadorId === u.id).length} leads</div></div>
-                  <div className="performer-earn">₦{u.earnings.toLocaleString()}</div>
-                </div>
-              );
-            })}
-            {ambassadors.filter(u => u.earnings > 0).length === 0 && <div className="empty"><span className="empty-ico">🏆</span><div className="empty-text">No conversions yet</div></div>}
+        )}
+        
+        {activeTab === 'ambassadors' && (
+          <div>
+            <div className="filter-bar">
+              <input 
+                className="filter-search" 
+                type="text" 
+                placeholder="Search ambassadors by name, email, or campus..." 
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+              />
+              <select className="filter-select" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="suspended">Suspended</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button className="btn-outline" onClick={() => exportData('ambassadors')}>
+                <Download size={13} /> Export
+              </button>
+            </div>
+            
+            <div className="ambassador-grid">
+              {visibleAmbassadors
+                .filter(u => {
+                  if (filterStatus !== 'all' && u.status !== filterStatus) return false;
+                  if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    return u.name.toLowerCase().includes(term) || 
+                           u.email.toLowerCase().includes(term) ||
+                           u.campus?.toLowerCase().includes(term);
+                  }
+                  return true;
+                })
+                .map(u => {
+                  const userLeads = leads.filter(l => l.ambassadorId === u.id);
+                  const userRevenue = userLeads.reduce((sum, l) => sum + (l.amountPaid || 0), 0);
+                  
+                  return (
+                    <div className="ambassador-card" key={u.id}>
+                      <div className="ambassador-header">
+                        <div className="ambassador-avatar">
+                          <User size={18} color="white" />
+                        </div>
+                        <div className="ambassador-info">
+                          <div className="ambassador-name">{u.name}</div>
+                          <div style={{ marginBottom: '0.25rem' }}>
+                            <Badge status={u.status} />
+                          </div>
+                          <div style={{ fontSize: '0.7rem', color: 'var(--muted)' }}>{u.campus}</div>
+                        </div>
+                      </div>
+                      <div className="ambassador-body">
+                        <div className="ambassador-stat-row">
+                          <span className="ambassador-stat-label">Leads</span>
+                          <span className="ambassador-stat-value">{userLeads.length}</span>
+                        </div>
+                        <div className="ambassador-stat-row">
+                          <span className="ambassador-stat-label">Earnings</span>
+                          <span className="ambassador-stat-value">₦{u.earnings?.toLocaleString()}</span>
+                        </div>
+                        <div className="ambassador-stat-row">
+                          <span className="ambassador-stat-label">Revenue</span>
+                          <span className="ambassador-stat-value">₦{userRevenue.toLocaleString()}</span>
+                        </div>
+                        <div className="ambassador-stat-row">
+                          <span className="ambassador-stat-label">Joined</span>
+                          <span className="ambassador-stat-value">{u.dateJoined}</span>
+                        </div>
+                      </div>
+                      <div className="ambassador-footer">
+                        <button 
+                          className="ambassador-action-btn"
+                          onClick={() => {
+                            setSelectedAmbassador(u);
+                            setShowAmbassadorModal(true);
+                          }}
+                        >
+                          <Eye size={12} /> View
+                        </button>
+                        {u.status === 'active' && (
+                          <button 
+                            className="ambassador-action-btn"
+                            onClick={() => suspendAmbassador(u.id)}
+                          >
+                            <UserX size={12} /> Suspend
+                          </button>
+                        )}
+                        {u.status === 'suspended' && (
+                          <button 
+                            className="ambassador-action-btn accent"
+                            onClick={() => activateAmbassador(u.id)}
+                          >
+                            <UserCheck size={12} /> Activate
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
-        </div>
+        )}
+        
+        {activeTab === 'pending' && (
+          <div className="card">
+            <div className="card-header" style={{ borderLeft: '3px solid var(--warning)' }}>
+              <span className="card-title"><AlertCircle size={12} style={{ display: 'inline', marginRight: 6, color: 'var(--warning)' }} />Pending Approvals ({pendingAmbassadors.length})</span>
+            </div>
+            {pendingAmbassadors.length === 0 ? (
+              <div className="empty">
+                <span className="empty-ico">✅</span>
+                <div className="empty-text">No pending approvals</div>
+              </div>
+            ) : (
+              pendingAmbassadors.map(u => (
+                <div className="approval-row" key={u.id}>
+                  <div>
+                    <div className="approval-name">{u.name}</div>
+                    <div className="approval-meta">{u.campus} · {u.department}</div>
+                    <div className="approval-meta">{u.email} · {u.phone}</div>
+                    <div style={{ marginTop: '0.25rem', fontSize: '0.7rem', color: 'var(--muted)' }}>
+                      Bank: {u.bankName} · {u.accountNumber}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button className="approve-btn" onClick={() => approveAmbassador(u.id)}>
+                      <CheckCircle size={12} /> Approve
+                    </button>
+                    <button className="reject-btn" onClick={() => rejectAmbassador(u.id)}>
+                      <X size={12} /> Reject
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+        
+        {activeTab === 'leads' && (
+          <div className="card">
+            <div className="card-header">
+              <span className="card-title">All Leads</span>
+              <button className="btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.68rem' }} onClick={() => exportData('leads')}>
+                <Download size={11} /> Export
+              </button>
+            </div>
+            {visibleLeads.length === 0 ? (
+              <div className="empty">
+                <span className="empty-ico">📊</span>
+                <div className="empty-text">No leads yet</div>
+              </div>
+            ) : (
+              visibleLeads.map(l => (
+                <div className="lead-row" key={l.id}>
+                  <div>
+                    <div className="lead-name">{l.customerName}</div>
+                    <div className="lead-service">
+                      <User size={10} style={{ display: 'inline', marginRight: 3 }} /> {l.ambassadorName} · {l.service}
+                    </div>
+                    <div className="lead-metrics">
+                      <span className="metric-chip">Paid: ₦{l.amountPaid?.toLocaleString()}</span>
+                      <span className="metric-chip">Bal: ₦{l.balance?.toLocaleString()}</span>
+                    </div>
+                    <div className="lead-date">{l.dateAdded}</div>
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div className="lead-commission">₦{l.commission?.toLocaleString()}</div>
+                    <Badge status={l.status} />
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <button 
+                        className="lead-action-btn"
+                        style={{ padding: '0.2rem 0.5rem' }}
+                        onClick={() => {
+                          setSelectedLead(l);
+                          setPaymentAmount('');
+                          setShowPaymentModal(true);
+                        }}
+                      >
+                        <CreditCard size={10} /> Add Payment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     );
   };
 
   const ReportsView = () => {
-    const ul = currentUser.role === 'Management' ? leads : leads.filter(l => l.ambassadorId === currentUser.id);
-    const monthly = ul.reduce((acc, l) => {
+    let filteredLeads = leads;
+    
+    if (currentUser.role === 'Ambassador') {
+      filteredLeads = leads.filter(l => l.ambassadorId === currentUser.id);
+    } else if (currentUser.role === 'Management') {
+      filteredLeads = leads.filter(l => {
+        const ambassador = users.find(u => u.id === l.ambassadorId);
+        return currentUser.managedCampuses?.includes(ambassador?.campus);
+      });
+    }
+    
+    const monthly = filteredLeads.reduce((acc, l) => {
       const m = new Date(l.dateAdded).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
       if (!acc[m]) acc[m] = { leads: 0, revenue: 0, commission: 0 };
       acc[m].leads++; acc[m].revenue += l.amountPaid || 0; acc[m].commission += l.commission || 0;
       return acc;
     }, {});
-    const total = ul.length, conv = ul.filter(l => l.status === 'Converted').length, totalC = ul.reduce((s, l) => s + (l.commission || 0), 0);
-    const exportR = () => {
-      const d = JSON.stringify({ user: currentUser.name, leads: ul }, null, 2);
-      const el = document.createElement('a'); el.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(d); el.download = `report_${new Date().toISOString().split('T')[0]}.json`; el.click();
-    };
+    
+    const total = filteredLeads.length;
+    const conv = filteredLeads.filter(l => l.status === 'Converted').length;
+    const totalC = filteredLeads.reduce((s, l) => s + (l.commission || 0), 0);
+    
     return (
       <div className="fade-up">
         <div className="flex-between mb-md">
           <div><div className="pg-eyebrow">Insights</div><div className="pg-title" style={{ marginBottom: 0 }}>Reports</div></div>
-          <button className="btn-outline" onClick={exportR}><Download size={13} /> Export</button>
+          <button className="btn-outline" onClick={() => exportData('reports')}><Download size={13} /> Export</button>
         </div>
         <div className="stats-grid stats-grid-3" style={{ marginBottom: '1.5rem' }}>
           <div className="stat-card stat-card-dark"><div className="stat-label">Total Leads</div><div className="stat-value">{total}</div></div>
@@ -1269,7 +2494,7 @@ const CAP = () => {
           <div className="card">
             <div className="card-header"><span className="card-title">Status Breakdown</span></div>
             {[['New Lead', 'pf-blue'], ['Consultation', 'pf-yellow'], ['Converted', 'pf-green']].map(([status, cls]) => {
-              const cnt = ul.filter(l => l.status === status).length;
+              const cnt = filteredLeads.filter(l => l.status === status).length;
               const pct = total > 0 ? (cnt / total * 100) : 0;
               return (
                 <div className="prog-row" key={status}>
@@ -1286,13 +2511,39 @@ const CAP = () => {
   };
 
   // ---- NAVIGATION CONFIG ----
-  const isManagement = currentUser?.role === 'Management';
+  const isManagement = currentUser?.role === 'Management' || currentUser?.role === 'Super Admin';
   const navItems = isManagement
-    ? [{ id: 'dashboard', icon: Settings, label: 'Dashboard' }, { id: 'leads', icon: Users, label: 'All Leads' }, { id: 'reports', icon: BarChart3, label: 'Reports' }, { id: 'profile', icon: User, label: 'Profile' }]
-    : [{ id: 'dashboard', icon: Home, label: 'Dashboard' }, { id: 'leads', icon: Users, label: 'My Leads' }, { id: 'reports', icon: BarChart3, label: 'Reports' }, { id: 'referral', icon: Share2, label: 'Referral' }, { id: 'profile', icon: User, label: 'Profile' }];
+    ? [
+        { id: 'dashboard', icon: Settings, label: 'Dashboard' }, 
+        { id: 'leads', icon: Users, label: 'All Leads' }, 
+        { id: 'reports', icon: BarChart3, label: 'Reports' }, 
+        { id: 'profile', icon: User, label: 'Profile' }
+      ]
+    : [
+        { id: 'dashboard', icon: Home, label: 'Dashboard' }, 
+        { id: 'leads', icon: Users, label: 'My Leads' }, 
+        { id: 'reports', icon: BarChart3, label: 'Reports' }, 
+        { id: 'referral', icon: Share2, label: 'Referral' }, 
+        { id: 'profile', icon: User, label: 'Profile' }
+      ];
 
-  const viewTitles = { dashboard: isManagement ? 'Management' : 'Dashboard', leads: 'Leads', reports: 'Reports', referral: 'Referral', profile: 'Profile', addLead: 'Add Lead' };
-  const viewEyebrows = { dashboard: isManagement ? 'Control Center' : 'Overview', leads: 'Pipeline', reports: 'Insights', referral: 'Growth', profile: 'Account', addLead: 'New Entry' };
+  const viewTitles = { 
+    dashboard: isManagement ? 'Management' : 'Dashboard', 
+    leads: 'Leads', 
+    reports: 'Reports', 
+    referral: 'Referral', 
+    profile: 'Profile', 
+    addLead: 'Add Lead' 
+  };
+  
+  const viewEyebrows = { 
+    dashboard: isManagement ? 'Control Center' : 'Overview', 
+    leads: 'Pipeline', 
+    reports: 'Insights', 
+    referral: 'Growth', 
+    profile: 'Account', 
+    addLead: 'New Entry' 
+  };
 
   const renderView = () => {
     switch (currentView) {
@@ -1329,11 +2580,20 @@ const CAP = () => {
             <div className="brand-sub">Ambassador Platform</div>
           </div>
           <div className="sidebar-user">
-            <div className="sidebar-avatar"><User size={18} color="white" /></div>
+            <div className="sidebar-avatar">
+              {currentUser.role === 'Super Admin' ? <Shield size={18} color="white" /> : <User size={18} color="white" />}
+            </div>
             <div>
               <div className="sidebar-name">{currentUser.name.split(' ')[0]}</div>
-              <div className="sidebar-role">{currentUser.role}</div>
-              <div className="ref-pill">{currentUser.referralCode}</div>
+              <div className="sidebar-role">
+                {currentUser.role === 'Super Admin' ? 'Super Admin' : currentUser.role}
+              </div>
+              {currentUser.role === 'Management' && currentUser.managedCampuses && (
+                <div className="sidebar-campus">
+                  <Building size={10} /> {currentUser.managedCampuses.length} campus(es)
+                </div>
+              )}
+              {!isManagement && <div className="ref-pill">{currentUser.referralCode}</div>}
             </div>
           </div>
           <nav className="sidebar-nav">
@@ -1364,10 +2624,9 @@ const CAP = () => {
               <div className="topbar-title">{viewTitles[currentView] || 'Dashboard'}</div>
             </div>
             <div className="topbar-actions">
-              {currentView !== 'addLead' && currentView !== 'profile' && (
+              {currentUser.role === 'Ambassador' && currentView !== 'addLead' && currentView !== 'profile' && (
                 <button className="btn-accent" onClick={() => setCurrentView('addLead')}><Plus size={14} /> Add Lead</button>
               )}
-              <button className="btn-outline" onClick={() => { setCurrentUser(null); setCurrentView('login'); }}><LogOut size={13} /> Sign Out</button>
             </div>
           </div>
 
